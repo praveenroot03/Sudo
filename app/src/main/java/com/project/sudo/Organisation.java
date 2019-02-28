@@ -11,12 +11,13 @@ public class Organisation implements Serializable {
     private String phnum = null;
     private String email = null;
     private String type = null;
+    private String photourl = null;
 
     public Organisation(){
 
     }
 
-    public Organisation(String name, String tagline, String desc, String website, String phnum, String email, String type) {
+    public Organisation(String name, String tagline, String desc, String website, String phnum, String email,String photourl, String type) {
         this.name = name;
         this.tagline = tagline;
         this.desc = desc;
@@ -24,6 +25,7 @@ public class Organisation implements Serializable {
         this.phnum = phnum;
         this.email = email;
         this.type = type;
+        this.photourl = photourl;
     }
 
     public String getName() {
@@ -53,4 +55,6 @@ public class Organisation implements Serializable {
     public String getType() {
         return type;
     }
+
+    public String getPhotourl() { return photourl; }
 }

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -41,6 +43,8 @@ public class OrgAdapter extends RecyclerView.Adapter<OrgAdapter.FeedViewHolder> 
 
         holder.name_tv.setText(org.getName());
         holder.tag_tv.setText(org.getTagline());
+
+        Glide.with(mContext).load(org.getPhotourl()).into(holder.imageview);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

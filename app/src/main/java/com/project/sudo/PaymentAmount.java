@@ -97,7 +97,6 @@ public class PaymentAmount extends AppCompatActivity {
                         String orgName = getIntent().getStringExtra("orgName");
                         String sender = mauth.getCurrentUser().getUid();
                         String amnt = amount.getText().toString();
-                        String transID = String.valueOf(userDetails.getTransList().size());
 
                         DocumentReference userRef = db.collection("users").document(mcurrentUser.getUid());
                         // Atomically add a new region to the "regions" array field.
