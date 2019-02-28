@@ -7,7 +7,7 @@ public class UserDetails {
     private String username = null;
     private String email = null;
     private String uid = null;
-    private ArrayList  transList = new ArrayList();
+    private String transList = null;
 
     public UserDetails(){
 
@@ -19,7 +19,7 @@ public class UserDetails {
         this.uid = uid;
     }
 
-    public UserDetails(String username, String email, String uid, ArrayList transList) {
+    public UserDetails(String username, String email, String uid, String transList) {
         this.username = username;
         this.email = email;
         this.uid = uid;
@@ -50,11 +50,11 @@ public class UserDetails {
         this.uid = uid;
     }
 
-    public ArrayList getTransList() {
+    public String getTransList() {
         return transList;
     }
 
-    public void setTransList(ArrayList transList) {
+    public void setTransList(String transList) {
         this.transList = transList;
     }
 }
