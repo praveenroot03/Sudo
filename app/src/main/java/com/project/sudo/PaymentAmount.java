@@ -8,11 +8,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.wallet.AutoResolveHelper;
 import com.google.android.gms.wallet.IsReadyToPayRequest;
@@ -22,6 +25,13 @@ import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Optional;
 
@@ -55,10 +65,51 @@ public class PaymentAmount extends AppCompatActivity {
      * @see Activity#onCreate(android.os.Bundle)
      */
 
+    private Button dbPay;
+    private TextView amount;
+
+    //Firebase Instances
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference userscol = db.collection("user");
+    FirebaseAuth mauth = FirebaseAuth.getInstance();
+    FirebaseUser mcurrentUser = mauth.getCurrentUser();
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_amount);
+
+        dbPay = findViewById(R.id.dbpay);
+        amount = findViewById(R.id.payableamount);
+
+        dbPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                userscol.document(mcurrentUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        UserDetails userDetails = documentSnapshot.toObject(UserDetails.class);
+
+                        String orgName = getIntent().getStringExtra("orgName");
+                        String sender = mauth.getCurrentUser().getUid();
+                        String amnt = amount.getText().toString();
+                        String transID = String.valueOf(userDetails.getTransList().size());
+
+                        DocumentReference userRef = db.collection("users").document(mcurrentUser.getUid());
+                        // Atomically add a new region to the "regions" array field.
+                        userRef.update("transList", FieldValue.arrayUnion(""));
+
+                    }
+                });
+
+
+
+            }
+        });
 
         Toast.makeText(this,"Be a philanthropist !!",Toast.LENGTH_SHORT).show();
 

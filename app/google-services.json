@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "830660739865-u8mlm1prcjpf2mjd60fibnoh45rdn9nn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.sudo",
+            "certificate_hash": "40b94caea0729d10570b05794c4c08341aa45720"
+          }
+        },
+        {
           "client_id": "830660739865-ka66732t6t4luqtdp28a5ntu43trjh3l.apps.googleusercontent.com",
           "client_type": 3
         }

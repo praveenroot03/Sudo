@@ -8,8 +8,13 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 
@@ -22,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
     private static final int RC_SIGN_IN = 123;
     private FirebaseAuth auth;
+    //Firebase Instances
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference userscol = db.collection("users");
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -83,9 +91,23 @@ public class MainActivity extends AppCompatActivity {
 
             // Successfully signed in
             if (resultCode == RESULT_OK) {
+                FirebaseUser mcurrentUser = auth.getCurrentUser();
+
+                UserDetails userDetails = new UserDetails(mcurrentUser.getDisplayName(),mcurrentUser.getEmail(),mcurrentUser.getUid());
+                userscol.document(mcurrentUser.getUid()).set(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(),"User Created",Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
+                    }
+                });
                 Toast.makeText(getApplicationContext(), "Signed in" +
                         "", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), OrganisationActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             } else {

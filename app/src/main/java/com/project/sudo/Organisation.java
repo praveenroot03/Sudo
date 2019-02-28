@@ -1,6 +1,8 @@
 package com.project.sudo;
 
-public class Organisation {
+import java.io.Serializable;
+
+public class Organisation implements Serializable {
 
     private String name = null;
     private String tagline = null;
