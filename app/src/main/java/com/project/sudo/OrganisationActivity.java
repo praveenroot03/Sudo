@@ -1,17 +1,10 @@
 package com.project.sudo;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.app.Activity;
-import android.content.Intent;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,10 +16,15 @@ import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
-import java.util.Optional;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Optional;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class OrganisationActivity extends AppCompatActivity {
 
@@ -78,6 +76,7 @@ public class OrganisationActivity extends AppCompatActivity {
 
         possiblyShowGooglePayButton();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     /**

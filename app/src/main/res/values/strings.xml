@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">Sudo</string>
-    <string name="title_home">Home</string>
+    <string name="title_categories">Categories</string>
     <string name="title_profile">Profile</string>
     <string name="title_bookmarks">Bookmarks</string>
     <string name="title_activity_organisation">OrganisationActivity</string>
+    <string name="all">A L L</string>
+    <string name="animals">A N I M A L S</string>
+    <string name="environment">E N V I R O N M E N T</string>
+    <string name="education">E D U C A T I O N</string>
+    <string name="humanitarian">H U M A N I T A R I A N</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -90,4 +95,5 @@
         cards so the FAB won’t interfere " "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello there! This space is under construction!</string>
 </resources>

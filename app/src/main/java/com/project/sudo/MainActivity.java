@@ -15,6 +15,7 @@ import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,24 +23,19 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
     private FirebaseAuth auth;
 
-
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             switch (item.getItemId()) {
                 case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_profile);
                     auth = FirebaseAuth.getInstance();
                     if (auth.getCurrentUser() != null) {
-                        // already signed in
-                        Intent intent = new Intent(getApplicationContext(), OrganisationActivity.class);
-                        startActivity(intent);
+                        fragmentTransaction.replace(R.id.content_frame, new ProfileFragment());
+                        fragmentTransaction.commit();
                     } else {
-                        Toast.makeText(getApplicationContext(), "not signin", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(getApplicationContext(), "Please Sign In", Toast.LENGTH_SHORT).show();
                         startActivityForResult(
                                 AuthUI.getInstance()
                                         .createSignInIntentBuilder()
@@ -50,13 +46,15 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                     return true;
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                case R.id.navigation_categories:
+                    fragmentTransaction.replace(R.id.content_frame, new CategoriesFragment());
+                    fragmentTransaction.commit();
+                    return true;
+                case R.id.navigation_favourites:
+//                    fragmentTransaction.replace(R.id.content_frame, new FavouritesFragment());
+//                    fragmentTransaction.commit();
                     Intent intent = new Intent(getApplicationContext(), OrganisationActivity.class);
                     startActivity(intent);
-                    return true;
-                case R.id.navigation_bookmarks:
-                    mTextMessage.setText(R.string.title_bookmarks);
                     return true;
             }
             return false;
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = findViewById(R.id.message);
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.getMenu().getItem(1).setChecked(true);
+        navigation.setSelectedItemId(R.id.navigation_categories);
     }
 
     @Override
