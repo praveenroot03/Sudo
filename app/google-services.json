@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "830660739865-p1dmdrbvam0iq216teki29d4riqem7ip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.sudo",
+            "certificate_hash": "333ca1bfd7cbd0c7824c2c2e21ad57bf5f4d1c4b"
+          }
+        },
+        {
           "client_id": "830660739865-ka66732t6t4luqtdp28a5ntu43trjh3l.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "830660739865-ka66732t6t4luqtdp28a5ntu43trjh3l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
