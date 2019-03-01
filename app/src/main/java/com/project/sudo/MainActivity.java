@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -59,10 +60,8 @@ public class MainActivity extends AppCompatActivity {
                     fragmentTransaction.commit();
                     return true;
                 case R.id.navigation_favourites:
-//                    fragmentTransaction.replace(R.id.content_frame, new FavouritesFragment());
-//                    fragmentTransaction.commit();
-                    Intent intent = new Intent(getApplicationContext(), OrganisationActivity.class);
-                    startActivity(intent);
+                    fragmentTransaction.replace(R.id.content_frame, new FavouritesFragment());
+                    fragmentTransaction.commit();
                     return true;
             }
             return false;
@@ -76,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = findViewById(R.id.message);
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_categories);
@@ -92,19 +90,21 @@ public class MainActivity extends AppCompatActivity {
             // Successfully signed in
             if (resultCode == RESULT_OK) {
                 FirebaseUser mcurrentUser = auth.getCurrentUser();
-
-                UserDetails userDetails = new UserDetails(mcurrentUser.getDisplayName(),mcurrentUser.getEmail(),mcurrentUser.getUid());
-                userscol.document(mcurrentUser.getUid()).set(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(),"User Created",Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
-                    }
-                });
+                FirebaseUserMetadata metadata = auth.getCurrentUser().getMetadata();
+                if(metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()) {
+                    UserDetails userDetails = new UserDetails(mcurrentUser.getDisplayName(), mcurrentUser.getEmail(), mcurrentUser.getUid());
+                    userscol.document(mcurrentUser.getUid()).set(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getApplicationContext(), "User Created", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
                 Toast.makeText(getApplicationContext(), "Signed in" +
                         "", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

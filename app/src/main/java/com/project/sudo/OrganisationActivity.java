@@ -3,6 +3,7 @@ package com.project.sudo;
 import android.os.Bundle;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -57,6 +58,7 @@ public class OrganisationActivity extends AppCompatActivity {
 
         toolbar.setTitle(org.getName());
         setSupportActionBar(toolbar);
+        Glide.with(getApplicationContext()).load(org.getPhotourl()).into(imageView);
 
         String desc = org.getTagline() + "\n\n"
                 + org.getDesc() + "\n\n"

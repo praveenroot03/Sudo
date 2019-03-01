@@ -40,6 +40,7 @@ public class CategoriesFragment extends Fragment {
     private List<Organisation> orgList;
     private OrgAdapter orgAdapter;
     private RecyclerView recyclerView;
+    private View gap;
     private ScrollView scrollView;
 
 
@@ -64,6 +65,7 @@ public class CategoriesFragment extends Fragment {
         orgList = new ArrayList<>();
 
         recyclerView = view.findViewById(R.id.recycler_view);
+//        gap = view.findViewById(R.id.gap);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
 
@@ -73,6 +75,7 @@ public class CategoriesFragment extends Fragment {
 
                 recyclerView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.GONE);
+//                gap.setVisibility(View.VISIBLE);
                 orgcol.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -94,6 +97,7 @@ public class CategoriesFragment extends Fragment {
 
                 recyclerView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.GONE);
+//                gap.setVisibility(View.VISIBLE);
                 orgcol.whereEqualTo("type","Animal").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -118,6 +122,7 @@ public class CategoriesFragment extends Fragment {
 
                 recyclerView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.GONE);
+//                gap.setVisibility(View.VISIBLE);
                 orgcol.whereEqualTo("type","Education").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -141,6 +146,7 @@ public class CategoriesFragment extends Fragment {
 
                 recyclerView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.GONE);
+//                gap.setVisibility(View.VISIBLE);
                 orgcol.whereEqualTo("type","Environment").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -164,6 +170,7 @@ public class CategoriesFragment extends Fragment {
 
                 recyclerView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.GONE);
+//                gap.setVisibility(View.VISIBLE);
                 orgcol.whereEqualTo("type","Humanitarian").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
