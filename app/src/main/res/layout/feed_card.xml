@@ -27,6 +27,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_launcher_background" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.3"
+            android:background="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@id/card_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/card_name" />
+
         <TextView
             android:id="@+id/card_name"
             android:layout_width="wrap_content"
@@ -51,16 +61,6 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:alpha="0.3"
-            android:background="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="@id/card_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/card_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
