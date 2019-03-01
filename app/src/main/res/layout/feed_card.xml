@@ -55,7 +55,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:alpha="0.1"
+            android:alpha="0.3"
             android:background="@android:color/black"
             app:layout_constraintBottom_toBottomOf="@id/card_image"
             app:layout_constraintEnd_toEndOf="parent"
