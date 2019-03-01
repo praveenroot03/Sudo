@@ -33,6 +33,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.json.JSONException;
@@ -67,10 +68,12 @@ public class PaymentAmount extends AppCompatActivity {
 
     private Button dbPay;
     private TextView amount;
+    private ArrayList<Transaction> TransHis = new ArrayList<>();
+    private ReturnTest retval ;
 
     //Firebase Instances
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference userscol = db.collection("user");
+    private CollectionReference userscol = db.collection("users");
     FirebaseAuth mauth = FirebaseAuth.getInstance();
     FirebaseUser mcurrentUser = mauth.getCurrentUser();
 
@@ -97,12 +100,30 @@ public class PaymentAmount extends AppCompatActivity {
                         String orgName = getIntent().getStringExtra("orgName");
                         String sender = mauth.getCurrentUser().getUid();
                         String amnt = amount.getText().toString();
-                        String transID = String.valueOf(userDetails.getTransList().size());
+                        String transID;
+                        if(userDetails.getTransList()!=null){
+                         transID = String.valueOf(userDetails.getTransList().size());}
+                        else{
+                            transID = "1";
+                        }
+                        retval=TransactionHistory.sending(transID,sender,orgName,amnt,TransHis);
+                        if(retval.Trans.size()!=0){
+                            TransHis = retval.Trans;
+                        }
+                        Toast.makeText(getApplicationContext(),retval.Check,Toast.LENGTH_SHORT).show();
 
                         DocumentReference userRef = db.collection("users").document(mcurrentUser.getUid());
                         // Atomically add a new region to the "regions" array field.
-                        userRef.update("transList", FieldValue.arrayUnion(""));
 
+                        if(TransHis.size()>2){
+                            userRef.update("transList", FieldValue.arrayUnion(TransHis.get(TransHis.size()-1).Hash));
+
+                        }
+                        else {
+                            for (int i = 0; i < TransHis.size(); i++) {
+                                userRef.update("transList", FieldValue.arrayUnion(TransHis.get(i).Hash));
+                            }
+                        }
                     }
                 });
 
