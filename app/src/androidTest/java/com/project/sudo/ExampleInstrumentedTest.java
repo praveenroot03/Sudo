@@ -2,8 +2,11 @@ package com.project.sudo;
 
 import android.content.Context;
 
+import junit.framework.TestCase;
+
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
+
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
