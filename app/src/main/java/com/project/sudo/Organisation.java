@@ -57,4 +57,18 @@ public class Organisation implements Serializable {
     }
 
     public String getPhotourl() { return photourl; }
+
+    @Override
+    public String toString() {
+        return "Organisation{" +
+                "name='" + name + '\'' +
+                ", tagline='" + tagline + '\'' +
+                ", desc='" + desc + '\'' +
+                ", website='" + website + '\'' +
+                ", phnum='" + phnum + '\'' +
+                ", email='" + email + '\'' +
+                ", type='" + type + '\'' +
+                ", photourl='" + photourl + '\'' +
+                '}';
+    }
 }
