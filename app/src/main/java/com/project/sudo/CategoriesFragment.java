@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -42,7 +43,7 @@ public class CategoriesFragment extends Fragment {
     private RecyclerView recyclerView;
     private View gap;
     private ScrollView scrollView;
-
+    private SearchView searchView;
 
 
     //Firebase Instances
@@ -67,13 +68,52 @@ public class CategoriesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
 //        gap = view.findViewById(R.id.gap);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        searchView = view.findViewById(R.id.searchview);
 
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                Toast.makeText(view.getContext(), "Im in", Toast.LENGTH_SHORT).show();
+                orgAdapter = new OrgAdapter(view.getContext(), orgList);
+                recyclerView.setAdapter(orgAdapter);
+                return false;
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                List<Organisation> tempList = new ArrayList<>();
+                for (Organisation org : orgList) {
+                    tempList.add(org);
+                }
+
+                for (int i = 0; i < tempList.size(); i++) {
+                    if (!tempList.get(i).toString().toLowerCase().contains(query.toLowerCase())) {
+                        tempList.remove(i);
+                        i--;
+                    }
+                }
+                orgAdapter = new OrgAdapter(view.getContext(), tempList);
+                recyclerView.setAdapter(orgAdapter);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+
+            }
+        });
 
         card_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 recyclerView.setVisibility(View.VISIBLE);
+                searchView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.GONE);
 //                gap.setVisibility(View.VISIBLE);
                 orgcol.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -94,7 +134,7 @@ public class CategoriesFragment extends Fragment {
         card_animals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                searchView.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.GONE);
 //                gap.setVisibility(View.VISIBLE);
@@ -119,7 +159,7 @@ public class CategoriesFragment extends Fragment {
         card_education.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                searchView.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.GONE);
 //                gap.setVisibility(View.VISIBLE);
@@ -143,7 +183,7 @@ public class CategoriesFragment extends Fragment {
         card_enivironment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                searchView.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.GONE);
 //                gap.setVisibility(View.VISIBLE);
@@ -167,6 +207,8 @@ public class CategoriesFragment extends Fragment {
         card_humanitarian.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                searchView.setVisibility(View.VISIBLE);
 
                 recyclerView.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.GONE);
