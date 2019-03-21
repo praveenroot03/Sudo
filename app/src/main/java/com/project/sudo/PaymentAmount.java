@@ -1,13 +1,9 @@
 package com.project.sudo;
 
-import android.os.Bundle;
-import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +20,6 @@ import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -33,11 +28,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PaymentAmount extends AppCompatActivity {
 
@@ -115,13 +113,14 @@ public class PaymentAmount extends AppCompatActivity {
                         DocumentReference userRef = db.collection("users").document(mcurrentUser.getUid());
                         // Atomically add a new region to the "regions" array field.
 
+
                         if(TransHis.size()>2){
-                            userRef.update("transList", FieldValue.arrayUnion(TransHis.get(TransHis.size()-1).Hash));
+                            userRef.update("transList", FieldValue.arrayUnion(TransHis.get(TransHis.size() - 1).toString()));
 
                         }
                         else {
                             for (int i = 0; i < TransHis.size(); i++) {
-                                userRef.update("transList", FieldValue.arrayUnion(TransHis.get(i).Hash));
+                                userRef.update("transList", FieldValue.arrayUnion(TransHis.get(i).toString()));
                             }
                         }
                     }

@@ -1,6 +1,6 @@
 package com.project.sudo;
 
-import java.util.*;
+import java.util.Date;
 public class Transaction {
     public String Hash;
     public String PrevHash;
@@ -23,5 +23,10 @@ public class Transaction {
         String data = TransID+SenderID+ReceiverID+Amount+TimeStamp+PrevHash;
         String calHash = Encryption.applySha256(data);
         return  calHash;
+    }
+
+    @Override
+    public String toString() {
+        return "" + Hash + "#" + PrevHash + "#" + TransID + "#" + SenderID + "#" + ReceiverID + "#" + Amount + "#" + TimeStamp;
     }
 }

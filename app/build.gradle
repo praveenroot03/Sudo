@@ -45,7 +45,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
-
     //Tests
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation "org.mockito:mockito-core:1.9.5"
