@@ -1,28 +1,29 @@
 package com.project.sudo;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.Serializable;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.content.Intent;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.Serializable;
 
 
 public class OrganisationActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private Toolbar toolbar;
-    private TextView desc_tv;
+    private TextView desc_tv, tvWeb, tvEmail, tvPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,9 @@ public class OrganisationActivity extends AppCompatActivity {
 
         imageView = findViewById(R.id.iv_header);
         desc_tv = findViewById(R.id.desc_tv);
+        tvWeb = findViewById(R.id.tv_website);
+        tvEmail = findViewById(R.id.tv_email);
+        tvPhone = findViewById(R.id.tv_phone);
         final FirebaseAuth mauth = FirebaseAuth.getInstance();
 
         Serializable serializable = getIntent().getSerializableExtra("orgInfo");
@@ -60,14 +64,41 @@ public class OrganisationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Glide.with(getApplicationContext()).load(org.getPhotourl()).into(imageView);
 
-        String desc = org.getTagline() + "\n\n"
-                + org.getDesc() + "\n\n"
-                + org.getWebsite() + "\n\n"
-                + "Contact Info," + "\n\n"
-                + org.getEmail() + "\n\n"
-                + org.getPhnum();
+        String desc = org.getTagline() + "\n\n" + org.getDesc() + "\n\n";
         desc_tv.setText(desc);
+        tvWeb.setText(org.getWebsite());
+        tvEmail.setText(org.getEmail());
+        tvPhone.setText(org.getPhnum());
 
+        tvPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + tvPhone.getText().toString()));
+                if (intent.resolveActivity(getPackageManager()) != null) startActivity(intent);
+            }
+        });
+
+        tvEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String emailIds[] = new String[1];
+                emailIds[0] = tvEmail.getText().toString();
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:"));
+                intent.putExtra(Intent.EXTRA_EMAIL, emailIds);
+                if (intent.resolveActivity(getPackageManager()) != null) startActivity(intent);
+            }
+        });
+
+        tvWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri webpage = Uri.parse(tvWeb.getText().toString());
+                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                if (intent.resolveActivity(getPackageManager()) != null) startActivity(intent);
+            }
+        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
