@@ -6,9 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -21,6 +24,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,7 +51,9 @@ public class CategoriesFragment extends Fragment {
 
 
     //Firebase Instances
+    private FirebaseUser mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference usercol = db.collection("users");
     private CollectionReference orgcol = db.collection("Organisation");
 
 
@@ -61,7 +67,7 @@ public class CategoriesFragment extends Fragment {
         card_education = view.findViewById(R.id.card_education);
         card_enivironment = view.findViewById(R.id.card_environment);
         card_humanitarian = view.findViewById(R.id.card_humanitarian);
-        final ScrollView scrollView = view.findViewById(R.id.scrollview);
+        scrollView = view.findViewById(R.id.scrollview);
 
         orgList = new ArrayList<>();
 
@@ -74,7 +80,6 @@ public class CategoriesFragment extends Fragment {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                Toast.makeText(view.getContext(), "Im in", Toast.LENGTH_SHORT).show();
                 orgAdapter = new OrgAdapter(view.getContext(), orgList);
                 recyclerView.setAdapter(orgAdapter);
                 return false;
@@ -112,10 +117,7 @@ public class CategoriesFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                recyclerView.setVisibility(View.VISIBLE);
-                searchView.setVisibility(View.VISIBLE);
-                scrollView.setVisibility(View.GONE);
-//                gap.setVisibility(View.VISIBLE);
+                initView();
                 orgcol.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -124,20 +126,18 @@ public class CategoriesFragment extends Fragment {
                             Organisation org = doc.toObject(Organisation.class);
                             orgList.add(org);
                         }
-                        orgAdapter = new OrgAdapter(view.getContext(), orgList);
-                        recyclerView.setAdapter(orgAdapter);
+                        integrateBM(view);
+
                     }
                 });
             }
+
         });
 
         card_animals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchView.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-                scrollView.setVisibility(View.GONE);
-//                gap.setVisibility(View.VISIBLE);
+                initView();
                 orgcol.whereEqualTo("type","Animal").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -146,9 +146,7 @@ public class CategoriesFragment extends Fragment {
                             Organisation org = doc.toObject(Organisation.class);
                             orgList.add(org);
                         }
-
-                        orgAdapter = new OrgAdapter(view.getContext(), orgList);
-                        recyclerView.setAdapter(orgAdapter);
+                        integrateBM(view);
 
                     }
                 });
@@ -159,10 +157,7 @@ public class CategoriesFragment extends Fragment {
         card_education.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchView.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-                scrollView.setVisibility(View.GONE);
-//                gap.setVisibility(View.VISIBLE);
+                initView();
                 orgcol.whereEqualTo("type","Education").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -171,9 +166,7 @@ public class CategoriesFragment extends Fragment {
                             Organisation org = doc.toObject(Organisation.class);
                             orgList.add(org);
                         }
-
-                        orgAdapter = new OrgAdapter(view.getContext(), orgList);
-                        recyclerView.setAdapter(orgAdapter);
+                        integrateBM(view);
 
                     }
                 });
@@ -183,10 +176,7 @@ public class CategoriesFragment extends Fragment {
         card_enivironment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchView.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-                scrollView.setVisibility(View.GONE);
-//                gap.setVisibility(View.VISIBLE);
+                initView();
                 orgcol.whereEqualTo("type","Environment").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -195,9 +185,7 @@ public class CategoriesFragment extends Fragment {
                             Organisation org = doc.toObject(Organisation.class);
                             orgList.add(org);
                         }
-
-                        orgAdapter = new OrgAdapter(view.getContext(), orgList);
-                        recyclerView.setAdapter(orgAdapter);
+                        integrateBM(view);
 
                     }
                 });
@@ -206,12 +194,9 @@ public class CategoriesFragment extends Fragment {
 
         card_humanitarian.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
+                initView();
 
-                searchView.setVisibility(View.VISIBLE);
-
-                recyclerView.setVisibility(View.VISIBLE);
-                scrollView.setVisibility(View.GONE);
 //                gap.setVisibility(View.VISIBLE);
                 orgcol.whereEqualTo("type","Humanitarian").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -222,8 +207,7 @@ public class CategoriesFragment extends Fragment {
                             orgList.add(org);
                         }
 
-                        orgAdapter = new OrgAdapter(view.getContext(), orgList);
-                        recyclerView.setAdapter(orgAdapter);
+                        integrateBM(view);
 
                     }
                 });
@@ -232,5 +216,31 @@ public class CategoriesFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void integrateBM(final View view) {
+        usercol.document(mFirebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                UserDetails userDetails = task.getResult().toObject(UserDetails.class);
+
+                for (int i = 0; i < orgList.size(); i++) {
+                    if (userDetails.getBookmarkIds().contains(orgList.get(i).getTagline())) {
+                        orgList.get(i).setBookmarked(true);
+                    }
+                }
+                orgAdapter = new OrgAdapter(view.getContext(), orgList);
+                recyclerView.setAdapter(orgAdapter);
+            }
+        });
+    }
+
+    private void initView() {
+        searchView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+        scrollView.setVisibility(View.GONE);
+        recyclerView.setItemViewCacheSize(10);
+        orgList.clear();
     }
 }

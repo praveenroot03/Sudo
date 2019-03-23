@@ -24,6 +24,7 @@ public class OrganisationActivity extends AppCompatActivity {
     private ImageView imageView;
     private Toolbar toolbar;
     private TextView desc_tv, tvWeb, tvEmail, tvPhone;
+    private FloatingActionButton btnWeb, btnEmail, btnPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,9 @@ public class OrganisationActivity extends AppCompatActivity {
         tvWeb = findViewById(R.id.tv_website);
         tvEmail = findViewById(R.id.tv_email);
         tvPhone = findViewById(R.id.tv_phone);
+        btnEmail = findViewById(R.id.btnEmail);
+        btnPhone = findViewById(R.id.btnPhone);
+        btnWeb = findViewById(R.id.btnWeb);
         final FirebaseAuth mauth = FirebaseAuth.getInstance();
 
         Serializable serializable = getIntent().getSerializableExtra("orgInfo");
@@ -70,7 +74,7 @@ public class OrganisationActivity extends AppCompatActivity {
         tvEmail.setText(org.getEmail());
         tvPhone.setText(org.getPhnum());
 
-        tvPhone.setOnClickListener(new View.OnClickListener() {
+        btnPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -79,7 +83,7 @@ public class OrganisationActivity extends AppCompatActivity {
             }
         });
 
-        tvEmail.setOnClickListener(new View.OnClickListener() {
+        btnEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String emailIds[] = new String[1];
@@ -91,7 +95,7 @@ public class OrganisationActivity extends AppCompatActivity {
             }
         });
 
-        tvWeb.setOnClickListener(new View.OnClickListener() {
+        btnWeb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Uri webpage = Uri.parse(tvWeb.getText().toString());

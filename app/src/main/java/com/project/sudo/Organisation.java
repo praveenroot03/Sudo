@@ -12,6 +12,7 @@ public class Organisation implements Serializable {
     private String email = null;
     private String type = null;
     private String photourl = null;
+    private Boolean Bookmarked = false;
 
     public Organisation(){
 
@@ -58,6 +59,14 @@ public class Organisation implements Serializable {
 
     public String getPhotourl() { return photourl; }
 
+    public Boolean getBookmarked() {
+        return Bookmarked;
+    }
+
+    public void setBookmarked(Boolean bookmarked) {
+        Bookmarked = bookmarked;
+    }
+
     @Override
     public String toString() {
         return "Organisation{" +
@@ -70,5 +79,6 @@ public class Organisation implements Serializable {
                 ", type='" + type + '\'' +
                 ", photourl='" + photourl + '\'' +
                 '}';
+
     }
 }

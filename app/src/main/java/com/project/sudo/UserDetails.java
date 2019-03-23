@@ -8,6 +8,7 @@ public class UserDetails {
     private String email = null;
     private String uid = null;
     private ArrayList<String> transList = null;
+    private ArrayList<String> bookmarkIds = null;
 
     public UserDetails(){
 
@@ -56,5 +57,13 @@ public class UserDetails {
 
     public void setTransList(ArrayList<String> transList) {
         this.transList = transList;
+    }
+
+    public ArrayList<String> getBookmarkIds() {
+        return bookmarkIds;
+    }
+
+    public void setBookmarkIds(ArrayList<String> bookmarkIds) {
+        this.bookmarkIds = bookmarkIds;
     }
 }
