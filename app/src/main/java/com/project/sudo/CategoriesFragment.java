@@ -226,7 +226,7 @@ public class CategoriesFragment extends Fragment {
                 UserDetails userDetails = task.getResult().toObject(UserDetails.class);
 
                 for (int i = 0; i < orgList.size(); i++) {
-                    if (userDetails.getBookmarkIds().contains(orgList.get(i).getTagline())) {
+                    if (userDetails.getBookmarkIds() != null && userDetails.getBookmarkIds().contains(orgList.get(i).getTagline())) {
                         orgList.get(i).setBookmarked(true);
                     }
                 }

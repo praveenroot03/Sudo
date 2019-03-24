@@ -102,21 +102,23 @@ public class FavouritesFragment extends Fragment {
 
                 final UserDetails userDetails = documentSnapshot.toObject(UserDetails.class);
 
-                for (int i = 0; i < userDetails.getBookmarkIds().size(); i++) {
-                    orgcol.document(userDetails.getBookmarkIds().get(i)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            Organisation organisation = task.getResult().toObject(Organisation.class);
-                            organisation.setBookmarked(true);
-                            orgList.add(organisation);
+                if (userDetails.getBookmarkIds() != null) {
+                    for (int i = 0; i < userDetails.getBookmarkIds().size(); i++) {
+                        orgcol.document(userDetails.getBookmarkIds().get(i)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                Organisation organisation = task.getResult().toObject(Organisation.class);
+                                organisation.setBookmarked(true);
+                                orgList.add(organisation);
 
-                            while (orgList.size() == userDetails.getBookmarkIds().size()) {
-                                integrateBM(view);
-                                break;
+                                while (orgList.size() == userDetails.getBookmarkIds().size()) {
+                                    integrateBM(view);
+                                    break;
+                                }
+
                             }
-
-                        }
-                    });
+                        });
+                    }
                 }
             }
         });

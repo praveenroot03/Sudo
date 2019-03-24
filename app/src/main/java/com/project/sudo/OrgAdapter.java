@@ -133,7 +133,7 @@ public class OrgAdapter extends RecyclerView.Adapter<OrgAdapter.FeedViewHolder> 
                         });
                     }
                 } else {
-                    Toast.makeText(mContext, "Signin To Bookamark!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Signin To Bookmark!!", Toast.LENGTH_SHORT).show();
 
                 }
             }
