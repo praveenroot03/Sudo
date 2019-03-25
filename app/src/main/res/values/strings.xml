@@ -98,4 +98,5 @@
     <string name="hello_blank_fragment">Hello there! This space is under construction!</string>
     <string name="tvEmailId">Email</string>
     <string name="transaction_history">Transaction History</string>
+    <string name="reset_transaction">Reset Transaction</string>
 </resources>

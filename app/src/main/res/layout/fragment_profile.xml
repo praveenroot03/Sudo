@@ -41,6 +41,13 @@
         android:layout_height="10dp"
         android:background="?android:attr/listDivider" />
 
+    <Button
+        android:id="@+id/rstTrans"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reset_transaction"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -57,6 +64,8 @@
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
+
 </LinearLayout>

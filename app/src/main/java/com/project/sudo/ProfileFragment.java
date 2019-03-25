@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,6 +63,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvName;
     private TextView tvEmail;
     private ListView listview;
+    private Button rstbtn;
 
     //Firebase Instances
     private FirebaseUser mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -75,10 +79,24 @@ public class ProfileFragment extends Fragment {
         tvEmail = view.findViewById(R.id.tvEmail);
         tvName = view.findViewById(R.id.tvName);
         listview = view.findViewById(R.id.listView);
+        rstbtn = view.findViewById(R.id.rstTrans);
 
         final ArrayList<String> moneyarray = new ArrayList<>();
         final ArrayList<String> namearray = new ArrayList<>();
         final ArrayList<String> timearray = new ArrayList<>();
+
+        rstbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                usercol.document(mFirebaseUser.getUid()).update("transList", null).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        rstbtn.setVisibility(View.GONE);
+                    }
+                });
+
+            }
+        });
 
         usercol.document(mFirebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -91,15 +109,23 @@ public class ProfileFragment extends Fragment {
                     ArrayList<String> arrayList = userDetails.getTransList();
                     ArrayList<Transaction> check = convert(arrayList);
                     if (isValidChain(check)) {
-                        for (int i = 1; i < arrayList.size(); i++) {
-                            String arr[] = arrayList.get(i).split("#");
-                            moneyarray.add(arr[5]);
-                            namearray.add(arr[4]);
-                            timearray.add(arr[6]);
-                        }
+                        if (arrayList.size() != 0) {
+                            for (int i = 1; i < arrayList.size(); i++) {
+                                String arr[] = arrayList.get(i).split("#");
+                                moneyarray.add(arr[5]);
+                                namearray.add(arr[4]);
+                                timearray.add(arr[6]);
+                            }
 
-                        CustomListView adapter = new CustomListView(getActivity(), moneyarray, namearray, timearray);
-                        listview.setAdapter(adapter);
+                            CustomListView adapter = new CustomListView(getActivity(), moneyarray, namearray, timearray);
+                            listview.setAdapter(adapter);
+                        } else {
+                            Toast.makeText(view.getContext(), "No Transactions Yet!", Toast.LENGTH_SHORT).show();
+
+                        }
+                    } else {
+                        Toast.makeText(view.getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                        rstbtn.setVisibility(View.VISIBLE);
                     }
                 }
             }
