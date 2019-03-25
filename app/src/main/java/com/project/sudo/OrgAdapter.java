@@ -20,7 +20,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.Serializable;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -40,7 +39,7 @@ public class OrgAdapter extends RecyclerView.Adapter<OrgAdapter.FeedViewHolder> 
 
 
     public OrgAdapter(Context mContext, List<Organisation> orgList) {
-        this.mContext = mContext;
+        OrgAdapter.mContext = mContext;
         this.orgList = orgList;
     }
 
@@ -75,7 +74,7 @@ public class OrgAdapter extends RecyclerView.Adapter<OrgAdapter.FeedViewHolder> 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, OrganisationActivity.class);
-                intent.putExtra("orgInfo", (Serializable) org);
+                intent.putExtra("orgInfo", org);
                 mContext.startActivity(intent);}
         });
 

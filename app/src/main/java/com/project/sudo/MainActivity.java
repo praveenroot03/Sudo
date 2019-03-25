@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 FirebaseUser mcurrentUser = auth.getCurrentUser();
                 FirebaseUserMetadata metadata = auth.getCurrentUser().getMetadata();
-                if(metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()) {
+                if (metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()) {
                     UserDetails userDetails = new UserDetails(mcurrentUser.getDisplayName(), mcurrentUser.getEmail(), mcurrentUser.getUid());
                     userscol.document(mcurrentUser.getUid()).set(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

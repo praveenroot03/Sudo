@@ -99,14 +99,27 @@ public class PaymentAmount extends AppCompatActivity {
                         String sender = mauth.getCurrentUser().getUid();
                         String amnt = amount.getText().toString();
                         String transID;
+                        ArrayList<Transaction> updateTrans = new ArrayList<>();
                         if(userDetails.getTransList()!=null){
-                         transID = String.valueOf(userDetails.getTransList().size());}
+                            transID = String.valueOf(userDetails.getTransList().size());
+                            for (int i = 0; i < Integer.parseInt(transID); i++) {
+                                String transrow[] = userDetails.getTransList().get(i).split("#");
+                                Transaction transObj = new Transaction(transrow[0], transrow[1], transrow[2], transrow[3], transrow[4], transrow[5], Long.parseLong(transrow[6]));
+                                updateTrans.add(transObj);
+                            }
+                        }
                         else{
                             transID = "1";
+                            TransHis.clear();
                         }
+                        TransHis = updateTrans;
                         retval=TransactionHistory.sending(transID,sender,orgName,amnt,TransHis);
                         if(retval.Trans.size()!=0){
                             TransHis = retval.Trans;
+                        } else {
+                            // d
+
+
                         }
                         Toast.makeText(getApplicationContext(),retval.Check,Toast.LENGTH_SHORT).show();
 
@@ -132,7 +145,6 @@ public class PaymentAmount extends AppCompatActivity {
         });
 
         Toast.makeText(this,"Be a philanthropist !!",Toast.LENGTH_SHORT).show();
-
         // initialize a Google Pay API client for an environment suitable for testing
         mPaymentsClient =
                 Wallet.getPaymentsClient(PaymentAmount.this,

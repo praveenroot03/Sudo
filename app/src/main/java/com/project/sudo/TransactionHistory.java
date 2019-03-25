@@ -27,7 +27,7 @@ public class TransactionHistory {
 
         if(isValidChain(TransactionChain)){
             if(TransactionChain.size()==0){
-                TransactionChain.add(new Transaction("0", "null", "null", "", "0"));
+                TransactionChain.add(new Transaction("0", "null", "null", "0", "0"));
                 TransactionChain.add(new Transaction(TransID,SenderID,ReciverID,Amount,TransactionChain.get(TransactionChain.size()-1).Hash));
                 data="Thank you, Your Transaction is Successful.";
             }
