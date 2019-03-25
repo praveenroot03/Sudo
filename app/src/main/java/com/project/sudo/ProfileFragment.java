@@ -31,6 +31,32 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    private static boolean isValidChain(ArrayList<Transaction> trans) {
+
+        if (trans.size() != 0) {
+            Transaction currentBlock;
+            Transaction PreviousBlock;
+
+            for (int i = 1; i < trans.size(); i++) {
+                currentBlock = trans.get(i);
+                PreviousBlock = trans.get(i - 1);
+                if (!currentBlock.PrevHash.equals(PreviousBlock.Hash)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static ArrayList<Transaction> convert(ArrayList<String> trans) {
+        ArrayList<Transaction> check = new ArrayList<Transaction>();
+        for (int i = 0; i < trans.size(); i++) {
+            String t[] = trans.get(i).split("#");
+            check.add(new Transaction(t[0], t[1], t[2], t[3], t[4], t[5], Long.parseLong(t[6])));
+        }
+        return check;
+    }
+
     private TextView tvName;
     private TextView tvEmail;
     private ListView listview;
@@ -63,16 +89,18 @@ public class ProfileFragment extends Fragment {
                 tvName.setText(userDetails.getUsername());
                 if (userDetails.getTransList() != null) {
                     ArrayList<String> arrayList = userDetails.getTransList();
+                    ArrayList<Transaction> check = convert(arrayList);
+                    if (isValidChain(check)) {
+                        for (int i = 1; i < arrayList.size(); i++) {
+                            String arr[] = arrayList.get(i).split("#");
+                            moneyarray.add(arr[5]);
+                            namearray.add(arr[4]);
+                            timearray.add(arr[6]);
+                        }
 
-                    for (int i = 1; i < arrayList.size(); i++) {
-                        String arr[] = arrayList.get(i).split("#");
-                        moneyarray.add(arr[5]);
-                        namearray.add(arr[4]);
-                        timearray.add(arr[6]);
+                        CustomListView adapter = new CustomListView(getActivity(), moneyarray, namearray, timearray);
+                        listview.setAdapter(adapter);
                     }
-
-                    CustomListView adapter = new CustomListView(getActivity(), moneyarray, namearray, timearray);
-                    listview.setAdapter(adapter);
                 }
             }
         });
