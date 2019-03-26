@@ -29,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
     private FirebaseAuth auth;
     //Firebase Instances
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseUser mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private CollectionReference userscol = db.collection("users");
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -60,8 +62,12 @@ public class MainActivity extends AppCompatActivity {
                     fragmentTransaction.commit();
                     return true;
                 case R.id.navigation_favourites:
-                    fragmentTransaction.replace(R.id.content_frame, new FavouritesFragment());
-                    fragmentTransaction.commit();
+                    if (mFirebaseUser != null) {
+                        fragmentTransaction.replace(R.id.content_frame, new FavouritesFragment());
+                        fragmentTransaction.commit();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Signin to Bookamark!", Toast.LENGTH_SHORT).show();
+                    }
                     return true;
             }
             return false;

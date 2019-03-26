@@ -128,10 +128,13 @@ public class ProfileFragment extends Fragment {
                                 timearray.add(arr[6]);
                             }
 
-                            CustomListView adapter = new CustomListView(getActivity(), moneyarray, namearray, timearray);
-                            listview.setAdapter(adapter);
+                            if (getActivity() != null) {
+                                CustomListView adapter = new CustomListView(getActivity(), moneyarray, namearray, timearray);
+                                listview.setAdapter(adapter);
+                            }
                         } else {
                             Toast.makeText(view.getContext(), "No Transactions Yet!", Toast.LENGTH_SHORT).show();
+
 
                         }
                     } else {

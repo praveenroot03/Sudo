@@ -230,11 +230,17 @@ public class CategoriesFragment extends Fragment {
                             orgList.get(i).setBookmarked(true);
                         }
                     }
-                    orgAdapter = new OrgAdapter(view.getContext(), orgList);
-                    recyclerView.setAdapter(orgAdapter);
+                    setAdapter(view);
                 }
             });
+        } else {
+            setAdapter(view);
         }
+    }
+
+    private void setAdapter(View view) {
+        orgAdapter = new OrgAdapter(view.getContext(), orgList);
+        recyclerView.setAdapter(orgAdapter);
     }
 
     private void initView() {
