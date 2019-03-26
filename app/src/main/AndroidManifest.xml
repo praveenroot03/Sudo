@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PaymentAmount"></activity>
+        <activity android:name=".AddOrganisation"></activity>
+        <activity android:name=".PaymentAmount" />
         <activity
             android:name=".OrganisationActivity"
             android:label="@string/title_activity_organisation"
@@ -28,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />

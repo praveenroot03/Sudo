@@ -45,7 +45,6 @@ public class CategoriesFragment extends Fragment {
     private List<Organisation> orgList;
     private OrgAdapter orgAdapter;
     private RecyclerView recyclerView;
-    private View gap;
     private ScrollView scrollView;
     private SearchView searchView;
 
@@ -219,21 +218,23 @@ public class CategoriesFragment extends Fragment {
     }
 
     private void integrateBM(final View view) {
-        usercol.document(mFirebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        if (mFirebaseUser != null) {
+            usercol.document(mFirebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                UserDetails userDetails = task.getResult().toObject(UserDetails.class);
+                    UserDetails userDetails = task.getResult().toObject(UserDetails.class);
 
-                for (int i = 0; i < orgList.size(); i++) {
-                    if (userDetails.getBookmarkIds() != null && userDetails.getBookmarkIds().contains(orgList.get(i).getTagline())) {
-                        orgList.get(i).setBookmarked(true);
+                    for (int i = 0; i < orgList.size(); i++) {
+                        if (userDetails.getBookmarkIds() != null && userDetails.getBookmarkIds().contains(orgList.get(i).getTagline())) {
+                            orgList.get(i).setBookmarked(true);
+                        }
                     }
+                    orgAdapter = new OrgAdapter(view.getContext(), orgList);
+                    recyclerView.setAdapter(orgAdapter);
                 }
-                orgAdapter = new OrgAdapter(view.getContext(), orgList);
-                recyclerView.setAdapter(orgAdapter);
-            }
-        });
+            });
+        }
     }
 
     private void initView() {

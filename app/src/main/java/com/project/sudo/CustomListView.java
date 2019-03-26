@@ -50,7 +50,10 @@ public class CustomListView extends ArrayAdapter {
 
         dMoney.setText(moneyarray.get(position));
         dOrgName.setText(nameArray.get(position));
-        dtimestamp.setText(new Date(new Timestamp(Long.parseLong(timeArray.get(position))).getTime()).toString());
+        String date = new Date(new Timestamp(Long.parseLong(timeArray.get(position))).getTime()).toString();
+        String split[] = date.split(" ");
+        date = split[0] + " " + split[1] + " " + split[2] + " " + split[3] + " " + split[5];
+        dtimestamp.setText(date);
 
 
         return rowView;

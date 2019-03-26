@@ -1,5 +1,6 @@
 package com.project.sudo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +64,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvName;
     private TextView tvEmail;
     private ListView listview;
-    private Button rstbtn;
+    private Button rstbtn, addbtn;
 
     //Firebase Instances
     private FirebaseUser mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -80,6 +81,15 @@ public class ProfileFragment extends Fragment {
         tvName = view.findViewById(R.id.tvName);
         listview = view.findViewById(R.id.listView);
         rstbtn = view.findViewById(R.id.rstTrans);
+        addbtn = view.findViewById(R.id.addOrg);
+
+        addbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(view.getContext(), AddOrganisation.class);
+                startActivity(intent);
+            }
+        });
 
         final ArrayList<String> moneyarray = new ArrayList<>();
         final ArrayList<String> namearray = new ArrayList<>();

@@ -33,6 +33,12 @@
             android:text="@string/tvEmailId"
             android:textSize="24sp" />
 
+        <Button
+            android:id="@+id/addOrg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Organization" />
+
     </LinearLayout>
 
     <View

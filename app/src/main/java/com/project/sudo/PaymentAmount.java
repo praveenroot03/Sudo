@@ -89,58 +89,60 @@ public class PaymentAmount extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                userscol.document(mcurrentUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (!amount.getText().toString().isEmpty()) {
+                    userscol.document(mcurrentUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                        UserDetails userDetails = documentSnapshot.toObject(UserDetails.class);
+                            UserDetails userDetails = documentSnapshot.toObject(UserDetails.class);
 
-                        String orgName = getIntent().getStringExtra("orgName");
-                        String sender = mauth.getCurrentUser().getUid();
-                        String amnt = amount.getText().toString();
-                        String transID;
-                        ArrayList<Transaction> updateTrans = new ArrayList<>();
-                        if(userDetails.getTransList()!=null){
-                            transID = String.valueOf(userDetails.getTransList().size());
-                            for (int i = 0; i < Integer.parseInt(transID); i++) {
-                                String transrow[] = userDetails.getTransList().get(i).split("#");
-                                Transaction transObj = new Transaction(transrow[0], transrow[1], transrow[2], transrow[3], transrow[4], transrow[5], Long.parseLong(transrow[6]));
-                                updateTrans.add(transObj);
+                            String orgName = getIntent().getStringExtra("orgName");
+                            String sender = mauth.getCurrentUser().getUid();
+                            String amnt = amount.getText().toString();
+                            String transID;
+                            ArrayList<Transaction> updateTrans = new ArrayList<>();
+                            if (userDetails.getTransList() != null) {
+                                transID = String.valueOf(userDetails.getTransList().size());
+                                for (int i = 0; i < Integer.parseInt(transID); i++) {
+                                    String transrow[] = userDetails.getTransList().get(i).split("#");
+                                    Transaction transObj = new Transaction(transrow[0], transrow[1], transrow[2], transrow[3], transrow[4], transrow[5], Long.parseLong(transrow[6]));
+                                    updateTrans.add(transObj);
+                                }
+                            } else {
+                                transID = "1";
+                                TransHis.clear();
                             }
-                        }
-                        else{
-                            transID = "1";
-                            TransHis.clear();
-                        }
-                        TransHis = updateTrans;
-                        retval=TransactionHistory.sending(transID,sender,orgName,amnt,TransHis);
-                        if(retval.Trans.size()!=0){
-                            TransHis = retval.Trans;
-                        } else {
-                            // d
+                            TransHis = updateTrans;
+                            retval = TransactionHistory.sending(transID, sender, orgName, amnt, TransHis);
+                            if (retval.Trans.size() != 0) {
+                                TransHis = retval.Trans;
+                            } else {
+                                // d
 
 
-                        }
-                        Toast.makeText(getApplicationContext(),retval.Check,Toast.LENGTH_SHORT).show();
-
-                        DocumentReference userRef = db.collection("users").document(mcurrentUser.getUid());
-                        // Atomically add a new region to the "regions" array field.
-
-
-                        if(TransHis.size()>2){
-                            userRef.update("transList", FieldValue.arrayUnion(TransHis.get(TransHis.size() - 1).toString()));
-
-                        }
-                        else {
-                            for (int i = 0; i < TransHis.size(); i++) {
-                                userRef.update("transList", FieldValue.arrayUnion(TransHis.get(i).toString()));
                             }
+                            Toast.makeText(getApplicationContext(), retval.Check, Toast.LENGTH_SHORT).show();
+
+                            DocumentReference userRef = db.collection("users").document(mcurrentUser.getUid());
+                            // Atomically add a new region to the "regions" array field.
+
+
+                            if (TransHis.size() > 2) {
+                                userRef.update("transList", FieldValue.arrayUnion(TransHis.get(TransHis.size() - 1).toString()));
+
+                            } else {
+                                for (int i = 0; i < TransHis.size(); i++) {
+                                    userRef.update("transList", FieldValue.arrayUnion(TransHis.get(i).toString()));
+                                }
+                            }
+                            finish();
                         }
-                    }
-                });
+                    });
 
 
-
+                } else {
+                    Toast.makeText(getApplicationContext(), "Enter Money to Donate", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
