@@ -6,7 +6,6 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,10 +62,10 @@ public class OrgAdapter extends RecyclerView.Adapter<OrgAdapter.FeedViewHolder> 
         // Already Bookmarked
         int adapterPosition = holder.getAdapterPosition();
         if (org.getBookmarked() == true) {
-            holder.bookmarkbtn.setText("Bookmarked");
+            holder.bookmarkbtn.setImageDrawable(mContext.getDrawable(R.drawable.bookmarked));
             itemStateArray.put(adapterPosition, true);
         } else {
-            holder.bookmarkbtn.setText("Bookmark");
+            holder.bookmarkbtn.setImageDrawable(mContext.getDrawable(R.drawable.unbookmarked));
             itemStateArray.put(adapterPosition, false);
         }
         
@@ -78,14 +77,15 @@ public class OrgAdapter extends RecyclerView.Adapter<OrgAdapter.FeedViewHolder> 
                 mContext.startActivity(intent);}
         });
 
-        if (org.getBookmarked() == true) holder.bookmarkbtn.setText("Bookmarked");
-        else holder.bookmarkbtn.setText("Bookmark");
+        if (org.getBookmarked() == true)
+            holder.bookmarkbtn.setImageDrawable(mContext.getDrawable(R.drawable.bookmarked));
+        else holder.bookmarkbtn.setImageDrawable(mContext.getDrawable(R.drawable.unbookmarked));
+
 
         // Checkbox States Retain
         if (!itemStateArray.get(position, false))
-            holder.bookmarkbtn.setText("Bookmark");
-        else
-            holder.bookmarkbtn.setText("Bookmarked");
+            holder.bookmarkbtn.setImageDrawable(mContext.getDrawable(R.drawable.unbookmarked));
+        else holder.bookmarkbtn.setImageDrawable(mContext.getDrawable(R.drawable.bookmarked));
 
 
         holder.bookmarkbtn.setOnClickListener(new View.OnClickListener() {
@@ -93,17 +93,17 @@ public class OrgAdapter extends RecyclerView.Adapter<OrgAdapter.FeedViewHolder> 
             public void onClick(View v) {
                 if (mFirebaseUser != null) {
                     // Adds bookmark
-                    if (holder.bookmarkbtn.getText().equals("Bookmark")) {
-                        holder.bookmarkbtn.setText("Bookmarked");
+                    if (holder.bookmarkbtn.getDrawable().getConstantState().equals(mContext.getDrawable(R.drawable.unbookmarked).getConstantState())) {
+                        holder.bookmarkbtn.setImageDrawable(mContext.getDrawable(R.drawable.bookmarked));
 
                         int adapterPosition = holder.getAdapterPosition();
 
                         // Change bookmark state
                         if (!itemStateArray.get(adapterPosition, false)) {
-                            holder.bookmarkbtn.setText("Bookmarked");
+                            holder.bookmarkbtn.setImageDrawable(mContext.getDrawable(R.drawable.bookmarked));
                             itemStateArray.put(adapterPosition, true);
                         } else {
-                            holder.bookmarkbtn.setText("Bookmark");
+                            holder.bookmarkbtn.setImageDrawable(mContext.getDrawable(R.drawable.unbookmarked));
                             itemStateArray.put(adapterPosition, false);
                         }
 
@@ -119,7 +119,7 @@ public class OrgAdapter extends RecyclerView.Adapter<OrgAdapter.FeedViewHolder> 
 
                     // Deletes bookmark
                     else {
-                        holder.bookmarkbtn.setText("Bookmark");
+                        holder.bookmarkbtn.setImageDrawable(mContext.getDrawable(R.drawable.unbookmarked));
 
                         DocumentReference userDocument = userCollection.document(mFirebaseUser.getUid());
                         userDocument.update("bookmarkIds", FieldValue.arrayRemove(org.getTagline())).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -149,15 +149,14 @@ public class OrgAdapter extends RecyclerView.Adapter<OrgAdapter.FeedViewHolder> 
 
     public class FeedViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imageview;
+        private ImageView imageview, bookmarkbtn;
         private TextView name_tv,tag_tv;
         private CardView cardView;
-        private Button bookmarkbtn;
 
         public FeedViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            bookmarkbtn = itemView.findViewById(R.id.bookmarkbtn);
+            bookmarkbtn = itemView.findViewById(R.id.bookmark_iv);
             imageview = itemView.findViewById(R.id.card_image);
             name_tv = itemView.findViewById(R.id.card_name);
             tag_tv = itemView.findViewById(R.id.card_tag);

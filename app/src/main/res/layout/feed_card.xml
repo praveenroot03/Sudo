@@ -40,38 +40,43 @@
 
         <TextView
             android:id="@+id/card_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
             android:paddingTop="4dp"
             android:text="Name"
             android:textColor="@android:color/white"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/card_tag"
+            app:layout_constraintEnd_toStartOf="@+id/bookmark_iv"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/card_tag"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:text="Tag"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/bookmark_iv"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/bookmarkbtn"
+        <ImageView
+            android:id="@+id/bookmark_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Bookmark"
+            android:layout_marginEnd="16dp"
+            android:alpha="0.8"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/view2" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/view2"
+            app:srcCompat="@drawable/unbookmarked" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

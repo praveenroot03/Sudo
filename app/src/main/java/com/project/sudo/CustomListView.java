@@ -48,7 +48,8 @@ public class CustomListView extends ArrayAdapter {
         TextView dOrgName = rowView.findViewById(R.id.org_name);
         TextView dtimestamp = rowView.findViewById(R.id.timestamp);
 
-        dMoney.setText(moneyarray.get(position));
+        String s = "₹" + moneyarray.get(position);
+        dMoney.setText(s);
         dOrgName.setText(nameArray.get(position));
         String date = new Date(new Timestamp(Long.parseLong(timeArray.get(position))).getTime()).toString();
         String split[] = date.split(" ");

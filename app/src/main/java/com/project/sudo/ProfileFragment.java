@@ -114,7 +114,8 @@ public class ProfileFragment extends Fragment {
 
                 UserDetails userDetails = task.getResult().toObject(UserDetails.class);
                 tvEmail.setText(userDetails.getEmail());
-                tvName.setText(userDetails.getUsername());
+                String s = "Hello " + userDetails.getUsername() + "!";
+                tvName.setText(s);
                 if (userDetails.getTransList() != null) {
                     ArrayList<String> arrayList = userDetails.getTransList();
                     ArrayList<Transaction> check = convert(arrayList);
