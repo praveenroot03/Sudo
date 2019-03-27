@@ -1,6 +1,8 @@
 package com.project.sudo;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +26,7 @@ public class OrganisationActivity extends AppCompatActivity {
     private ImageView imageView;
     private Toolbar toolbar;
     private TextView desc_tv, tvWeb, tvEmail, tvPhone;
-    private FloatingActionButton btnWeb, btnEmail, btnPhone;
+    private FloatingActionButton btnWeb, btnEmail, btnPhone, btnWhatsapp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class OrganisationActivity extends AppCompatActivity {
         btnEmail = findViewById(R.id.btnEmail);
         btnPhone = findViewById(R.id.btnPhone);
         btnWeb = findViewById(R.id.btnWeb);
+        btnWhatsapp = findViewById(R.id.btnWhatsapp);
         final FirebaseAuth mauth = FirebaseAuth.getInstance();
 
         Serializable serializable = getIntent().getSerializableExtra("orgInfo");
@@ -101,6 +104,33 @@ public class OrganisationActivity extends AppCompatActivity {
                 Uri webpage = Uri.parse(tvWeb.getText().toString());
                 Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
                 if (intent.resolveActivity(getPackageManager()) != null) startActivity(intent);
+            }
+        });
+
+        btnWhatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PackageManager pm = getPackageManager();
+                try {
+
+                    Intent waIntent = new Intent(Intent.ACTION_SEND);
+                    waIntent.setType("text/plain");
+                    String text = " Check out the organization : " + org.getName() + " \nLink : " + org.getWebsite() + " \n- with love ❤︎ SUDO ";
+
+                    PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
+                    //Check if package exists or not. If not then code
+                    //in catch block will be called
+                    waIntent.setPackage("com.whatsapp");
+
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, "Share with"));
+
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                            .show();
+                }
+
+
             }
         });
 

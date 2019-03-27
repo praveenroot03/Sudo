@@ -80,6 +80,23 @@
                 android:text="Test0"
                 app:layout_gravity="center_vertical" />
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnWhatsapp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/text_margin"
+                android:layout_marginTop="@dimen/text_margin"
+                android:clickable="true"
+                app:srcCompat="@android:drawable/ic_menu_share" />
+
+            <TextView
+                android:id="@+id/sharewa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_margin"
+                android:text="Share on Whatsapp "
+                app:layout_gravity="center_vertical" />
+
         </androidx.gridlayout.widget.GridLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
