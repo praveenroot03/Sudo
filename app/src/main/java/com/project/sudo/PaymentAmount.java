@@ -90,6 +90,12 @@ public class PaymentAmount extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (!amount.getText().toString().isEmpty()) {
+                    try {
+                        Integer.parseInt(amount.getText().toString());
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Please enter a valid Amount (Integer)", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     userscol.document(mcurrentUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
